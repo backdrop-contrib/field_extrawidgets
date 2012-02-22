@@ -122,7 +122,13 @@ function field_extrawidgets_field_widget_render_settings($element, $form_state, 
   $instance = $element['#instance'];
 
   $formatter = field_info_formatter_types($formatter_type);
-  $formatter_settings = isset($form_state['values']['instance']['widget']['settings']['formatter_settings']) ? $form_state['values']['instance']['widget']['settings']['formatter_settings'] : $instance['widget']['settings']['formatter_settings'];
+  $formatter_settings = array();
+  if (isset($form_state['values']['instance']['widget']['settings']['formatter_settings'])) {
+    $formatter_settings += $form_state['values']['instance']['widget']['settings']['formatter_settings'];
+  }
+  elseif (isset($instance['widget']['settings']['formatter_settings'])) {
+    $formatter_settings += $instance['widget']['settings']['formatter_settings'];
+  }
   $formatter_settings += field_info_formatter_settings($formatter_type);
 
   $settings_form = array('#value' => array());
