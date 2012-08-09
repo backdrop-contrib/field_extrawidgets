@@ -17,9 +17,15 @@
  */
 
 /**
- * Implements hook_field_widget_info().
+ * Implements hook_field_widget_info_alter().
+ *
+ * Since we always want our (advanced) widgets to be the last choices, instead
+ * of using hook_field_widget_info() (which gives you no control over the
+ * order of the widgets presented in the UI), we use the alter hook and add
+ * widgets to the end of the list. It's evil and ugly, but Field API gives us
+ * no clean alternative.
  */
-function field_extrawidgets_field_widget_info() {
+function field_extrawidgets_field_widget_info_alter(&$widgets) {
   $widgets['field_extrawidgets_hidden'] = array(
     'label' => t('Hidden'),
     'description' => t('A widget that is completely hidden.'),
