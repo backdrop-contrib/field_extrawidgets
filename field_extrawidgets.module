@@ -67,10 +67,12 @@ function field_extrawidgets_widget_settings($field, $instance) {
  * Implements hook_field_widget_settings_form().
  */
 function field_extrawidgets_field_widget_settings_form($field, $instance) {
-  $widget = $instance['widget'];
-  $settings = field_extrawidgets_widget_settings($field, $instance);
+  // The Hidden widget doesn't have any settings.
+  if ($instance['widget']['type'] != 'field_extrawidgets_read_only') {
+    return array();
+  }
 
-  $form = array();
+  $settings = field_extrawidgets_widget_settings($field, $instance);
 
   // Include the field_ui admin form.
   module_load_include('inc', 'field_ui', 'field_ui.admin');
