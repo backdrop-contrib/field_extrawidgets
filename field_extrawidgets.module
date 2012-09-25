@@ -28,6 +28,7 @@ function field_extrawidgets_field_widget_info() {
     'behaviors' => array(
       'multiple values' => FIELD_BEHAVIOR_CUSTOM,
     ),
+    'weight' => 10,
   );
 
   $widgets['field_extrawidgets_read_only'] = array(
@@ -42,6 +43,7 @@ function field_extrawidgets_field_widget_info() {
     'behaviors' => array(
       'multiple values' => FIELD_BEHAVIOR_CUSTOM,
     ),
+    'weight' => 11,
   );
 
   return $widgets;
