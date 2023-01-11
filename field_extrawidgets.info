@@ -1,3 +1,4 @@
 name = Field Extra Widgets
 description = "Provides utility widgets for the Field API."
-core = 7.x
+backdrop = 1.x
+type = module
