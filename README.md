@@ -1,5 +1,7 @@
 # Field extra widgets
 
+Provides two helper widgets for the Field API:
+
 Hidden: this widget doesn't show anything on the edit form, and as a consequence
 prevents the user from modifying the content of the widget. This is useful in
 some situations where using hook_field_access() is not suitable
