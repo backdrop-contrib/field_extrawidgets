@@ -17,7 +17,8 @@
  */
 
 /**
- * Implements hook_field_widget_info().().
+ * Implements hook_field_widget_info().
+().
  */
 function field_extrawidgets_field_widget_info() {
   $widgets['field_extrawidgets_hidden'] = array(
@@ -64,7 +65,8 @@ function field_extrawidgets_widget_settings($field, $instance) {
 }
 
 /**
- * Implements hook_field_widget_settings_form().().
+ * Implements hook_field_widget_settings_form().
+().
  */
 function field_extrawidgets_field_widget_settings_form($field, $instance) {
   // The Hidden widget doesn't have any settings.
@@ -162,7 +164,8 @@ function field_extrawidgets_field_widget_settings_ajax($form, $form_state) {
 }
 
 /**
- * Implements hook_field_widget_form().().
+ * Implements hook_field_widget_form().
+().
  */
 function field_extrawidgets_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   $widget_type = $instance['widget']['type'];
@@ -202,7 +205,7 @@ function field_extrawidgets_field_widget_form(&$form, &$form_state, $field, $ins
         '#weight' => $display['weight'],
         '#title' => $instance['label'],
         '#access' => TRUE,
-        '#label_display' => $display['label'],
+        '#label_display' => $display['default']['label'],
         '#view_mode' => '_custom_display',
         '#language' => $langcode,
         '#field_name' => $field['field_name'],
