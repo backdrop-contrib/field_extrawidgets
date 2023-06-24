@@ -162,7 +162,7 @@ function field_extrawidgets_field_widget_settings_ajax($form, $form_state) {
 }
 
 /**
- * Implements hook_field_widget_form().().
+ * Implements hook_field_widget_form().
  */
 function field_extrawidgets_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
   $widget_type = $instance['widget']['type'];
@@ -175,10 +175,11 @@ function field_extrawidgets_field_widget_form(&$form, &$form_state, $field, $ins
   if ($widget_type == 'field_extrawidgets_read_only') {
     // Clone the entity to avoid messing with it.
     $entity_type = $element['#entity_type'];
-    if (!isset($form_state[$entity_type])) {
+    $form_element = ($entity_type == 'taxonomy_term' ? 'term' : $entity_type);
+    if (!isset($form_state[$form_element])) {
       return array();
     }
-    $cloned_entity = clone $form_state[$entity_type];
+    $cloned_entity = clone $form_state[$form_element];
 
     if (!field_access('view', $field, $entity_type, $cloned_entity)) {
       // The current user doesn't have access to view this field.
@@ -193,8 +194,11 @@ function field_extrawidgets_field_widget_form(&$form, &$form_state, $field, $ins
 
     $element += field_view_field($entity_type, $cloned_entity, $field['field_name'], $display, $langcode);
 
+    // Check if the field has a value (not empty).
+    $hasValue = isset($element[0]['#markup']) && !empty($element[0]['#markup']);
+
     // If asked to display a placeholder text, detect if the result is empty.
-    if (!isset($element[0]) && !empty($widget_settings['display_empty'])) {
+    if (!$hasValue && !empty($widget_settings['display_empty'])) {
       $display = _field_info_prepare_instance_display($field, $display);
       // Generate the field structure as done in field_default_view().
       $element += array(
@@ -202,7 +206,7 @@ function field_extrawidgets_field_widget_form(&$form, &$form_state, $field, $ins
         '#weight' => $display['weight'],
         '#title' => $instance['label'],
         '#access' => TRUE,
-        '#label_display' => $display['default']['label'],
+        '#label_display' => $display['default'],
         '#view_mode' => '_custom_display',
         '#language' => $langcode,
         '#field_name' => $field['field_name'],
@@ -214,8 +218,19 @@ function field_extrawidgets_field_widget_form(&$form, &$form_state, $field, $ins
         '#items' => array(0 => ''),
         '#formatter' => $display['type'],
       );
+
       $element[0] = array(
         '#markup' => t('Not defined'),
+      );
+    } else {
+      // Add the field name as a label.
+      $element = array(
+        '#type' => 'container',
+        '#attributes' => array('class' => array('field-extrawidgets-read-only')),
+        'label' => array(
+          '#markup' => '<div class="field-label"><strong>' . $instance['label'] . '</strong></div>',
+        ),
+        'value' => $element,
       );
     }
 
